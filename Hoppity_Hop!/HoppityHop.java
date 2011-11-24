@@ -6,8 +6,6 @@ import java.lang.*;
 
 public class HoppityHop{
 
-
-
     public static void main(String[] args){
 
 	if(args.length == 0){
@@ -15,10 +13,10 @@ public class HoppityHop{
 	}
 
 	String filename = args[0];
+	int numLines = 0;
 
-	System.out.println("Reading Inputs From File: " + filename);
-	
-	try{
+       System.out.println("Reading Inputs From File: " + filename);
+       try{
 
 	    FileInputStream fstream = new FileInputStream(filename);
 
@@ -27,8 +25,8 @@ public class HoppityHop{
 	    String strLine;
 
 	    int counter = 0;
-	    int numLines;
-	    while((srtLine = br.readLine()) != null){
+	
+	    while((strLine = br.readLine()) != null){
 
 		if(counter == 0){
 		    numLines = Integer.parseInt(strLine);
@@ -36,13 +34,49 @@ public class HoppityHop{
 
 	    }// end while
 
+	    in.close();
+
+	}
+
+	catch(Exception e){
+
+	    System.err.println("Error: "+ e.getMessage());
+	    
+	}
+
+	System.out.println("The input integer: "+ numLines );
+	
+	
+	for(int i = 1; i <= numLines; i++){
+
+
+	    if(i%3 == 0 && i%5 != 0 ){
+		
+		System.out.println("Hoppity");
+	    }
+	    
+	    if(i%5 == 0 && i%3 != 0){
+		
+		System.out.println("Hophop");
+
+	    }
+
+	    if(i%3 == 0 && i%5 == 0){
+		
+		System.out.println("Hop");
+
+	    }
+
+		
+
+
+
+	}
 
 	
-
-
+    
 
     }
-
 
 
 
