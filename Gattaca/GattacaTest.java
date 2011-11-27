@@ -60,7 +60,7 @@ public class GattacaTest {
         v[5] = 20;
         v[6] = 23;
         v[7] = 22;
-
+      
         
         StdOut.println("Sort by right endpoint");
         Arrays.sort(intervals, Interval1D.RIGHT_ENDPOINT_ORDER);
@@ -86,7 +86,7 @@ public class GattacaTest {
     				i = p[i];
     			} else
     				i--;
-    		System.out.println("sum is " + sum);
+    		System.out.println("Score is " + sum);
 	}
 
 }
