@@ -52,7 +52,8 @@ public class GattacaTest {
         intervals[7] = new Interval1D(0.0, 9.0, 22.0);
 
         int[] v = new int[8];
-        v[0] = 27;
+        /*
+	v[0] = 27;
         v[1] = 24;
         v[2] = 45;
         v[3] = 26;
@@ -60,17 +61,34 @@ public class GattacaTest {
         v[5] = 20;
         v[6] = 23;
         v[7] = 22;
-      
+	*/
         
         StdOut.println("Sort by right endpoint");
         Arrays.sort(intervals, Interval1D.RIGHT_ENDPOINT_ORDER);
+	Interval1D local;
+	for(int i = 0; i < v.length; i++){
+	    local = intervals[i];
+	    v[i] = (int)local.weight();
+	    
+	}
+
         for (int i = 0; i < intervals.length; i++)
             StdOut.println(intervals[i]);
         StdOut.println();
 		
         int[] p = highestP(intervals);
         int[] M = new int[8];
-        
+	
+	for(int i = 0; i < p.length; i++){
+	    System.out.println("p"+"["+i+"]"+" = "+p[i]);
+
+
+	}
+
+
+
+
+
      // algorithm run by dynamic programming
      		M[0] = 0;
      		for (int i = 1; i < 8; i++) {
