@@ -37,6 +37,40 @@ public class Solution{
 
 	    }
 
+	    // Boundary Cases
+	    if(N == 0){
+
+		System.out.println(0);
+		return;
+		
+
+	    }else if(N == 1){
+
+		System.out.println(1);
+		//	hanoi(one,start,finish,using);
+		return;
+
+
+
+	    }
+		
+		System.out.println("");
+		/*
+		  Aha! Moment: In the question they state that there is always a solution less than
+		  7 steps. For 3-peg M(n,3) = 2^n - 1 mimimum steps, with k(n,3) = K(n,3) = n - 1 For All n>= 1
+
+		  M = 2^3 - 1 = 7
+		  M = 2^2 - 1 = 3
+
+		  This implies for n = 1,2 for all 3-peg problems
+		  k = 0, 1.
+
+
+
+		 */
+
+
+
 	    if(K == 3){
 
 		int minimumSteps = (int)Math.pow(2,N) - 1;
@@ -46,9 +80,36 @@ public class Solution{
 
 
 	    }
+
+
+	    /*
+
+	      For Complete Solution See:
+
+	      Generalized Multi-Peg Tower of Hanoi Problem
+	      By: A. A. K. Majumdar
+
+	      
+
+
+	     */
 	    else if(K >= 4){
 
-	     
+		int m;
+		/*
+
+		  Hmsubn = (2m-5)(Math.pow(2,n/m-2-1)) if i = 0
+		  
+		  Hmsubn = (2i-1)(Math.pow(2,n-i/m-2) + (2m-5)(Math.pow(2,(n-i)/(m-2)) -1) i not 0
+
+		  i = n%(m-2)
+
+		  n disks to peg m with H^m sub n.
+
+		  If n < m then HMsubn = 2n - 1
+
+
+		 */
 
 
 

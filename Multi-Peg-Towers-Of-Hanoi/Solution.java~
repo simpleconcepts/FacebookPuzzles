@@ -37,12 +37,40 @@ public class Solution{
 
 	    }
 
+	    // Boundary Cases
+	    if(N == 0){
+
+		System.out.println(0);
+		return;
+		
+
+	    }else if(N == 1){
+
+		System.out.println(1);
+		return;
+
+
+
+	    }
+		
+		System.out.println("");
+
+
+
+
 	    if(K == 3){
 
 		int minimumSteps = (int)Math.pow(2,N) - 1;
 		
 		System.out.println(minimumSteps);
 		hanoi(N,1,2,3);
+
+
+	    }
+	    else if(K >= 4){
+
+	     
+
 
 
 	    }
@@ -71,8 +99,6 @@ public class Solution{
 	    hanoi(N-1,Start,Using,To);
 	    hanoi(1, Start, To, Using);
 	    hanoi(N-1,Using, To, Start);
-	    //    System.out.println(Using+" "+To);
-
 
 	}
 
@@ -88,7 +114,7 @@ public class Solution{
 
 	String filename = args[0];
 	solve(filename);
-	System.out.println("Hello, World!");
+
 
 
 
