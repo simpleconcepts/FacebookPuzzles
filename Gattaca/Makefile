@@ -6,8 +6,8 @@ JC = javac
 CLASSES = \
 	Interval1D.java \
 	StdOut.java \
-	GattacaTest.java\
-	AdjMatrixGraph.java
+	Gattaca.java\
+	InputParser.java
 default: classes
 
 classes: $(CLASSES:.java=.class)
