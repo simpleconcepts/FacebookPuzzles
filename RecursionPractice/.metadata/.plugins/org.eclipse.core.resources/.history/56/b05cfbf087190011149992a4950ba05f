@@ -1,0 +1,36 @@
+import java.io.*;
+import java.lang.*;
+import java.util.*;
+
+public class GattacaInputParser {
+
+	public static void generateIntervalsFromFile(String filename){
+		
+        System.out.println("Reading Inputs From File: " + filename);
+
+        /* Read Text File From File */
+        try{
+        	/* Open File   */
+        	FileInputStream fstream = new FileInputStream(filename);
+        	/* Get The Object of DataInputStream   */
+        	DataInputStream in = new DataInputStream(fstream);
+        	BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        	final int lengthOfDNA = Integer.parseInt(br.readLine().trim());
+        	int v,w = 0;
+        	
+        	in.close();
+        }
+        catch(Exception e){
+        	
+        }
+		
+	}
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

@@ -1,0 +1,110 @@
+import java.util.*;
+
+
+public class GattacaTest {
+
+	static int maxindex;
+
+
+
+	/**
+	 * @param args
+	 */
+	
+	public static int[] highestP(Interval1D[] intervals){
+		
+		int[] p = new int[intervals.length];
+		p[0] = 0;
+
+		for(int i = 1; i < p.length; i++){
+			for(int j = i-1; j >= 0; j--){
+				if(!intervals[i].contains(intervals[j].right())){	
+						p[i] = j;	
+						break;
+				}		
+
+				
+			}
+
+			
+		}
+		
+			return p;
+	}
+	
+	// return the maximum of two entries
+		private static int max(int x, int y) {
+			if (x > y)
+				return x;
+			return y;
+		}
+		
+	public static void main(String[] args) {
+
+	    Interval1D[] intervals = new Interval1D[8];
+        intervals[0] = new Interval1D(43.0, 70.0, 27.0);
+        intervals[1] = new Interval1D(3.0, 18.0, 24.0);
+        intervals[2] = new Interval1D(65.0, 99.0, 45.0);
+        intervals[3] = new Interval1D(20.0, 39.0, 26.0);
+        intervals[4] = new Interval1D(45.0, 74.0, 26.0);
+        intervals[5] = new Interval1D(10.0, 28.0, 20.0);
+        intervals[6] = new Interval1D(78.0, 97.0, 23.0);
+        intervals[7] = new Interval1D(0.0, 9.0, 22.0);
+
+        int[] v = new int[8];
+        /*
+	v[0] = 27;
+        v[1] = 24;
+        v[2] = 45;
+        v[3] = 26;
+        v[4] = 26;
+        v[5] = 20;
+        v[6] = 23;
+        v[7] = 22;
+	*/
+        
+        StdOut.println("Sort by right endpoint");
+        Arrays.sort(intervals, Interval1D.RIGHT_ENDPOINT_ORDER);
+	Interval1D local;
+	for(int i = 0; i < v.length; i++){
+	    local = intervals[i];
+	    v[i] = (int)local.weight();
+	    
+	}
+
+        for (int i = 0; i < intervals.length; i++)
+            StdOut.println(intervals[i]);
+        StdOut.println();
+		
+        int[] p = highestP(intervals);
+        int[] M = new int[8];
+	
+	for(int i = 0; i < p.length; i++){
+	    System.out.println("p"+"["+i+"]"+" = "+p[i]);
+
+
+	}
+
+
+
+
+
+     // algorithm run by dynamic programming
+     		M[0] = 0;
+     		for (int i = 1; i < 8; i++) {
+     			M[i] = max(v[i] + M[p[i]], M[i - 1]);
+     		}
+        
+        
+     		int i, sum = 0;
+
+    		for (i = 7; i > 0;)
+    			if (v[i] + M[p[i]] >= M[i - 1]) {
+    				sum += v[i];
+    				i = p[i];
+    			} else
+    				i--;
+    		System.out.println("Score is " + sum);
+	}
+
+}

@@ -1,0 +1,19 @@
+import java.io.*;
+import java.lang.*;
+import java.util.*;
+
+public class GattacaInputParser {
+
+	public static void generateIntervalsFromFile(String filename){
+		
+		
+	}
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
