@@ -1,0 +1,24 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+public static boolean contains(int[] array, int fromIndex, int toIndex, int target){
+	
+	if(fromIndex > toIndex){
+		return false;
+	}
+	
+}
+
+
+public class Recursion {
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

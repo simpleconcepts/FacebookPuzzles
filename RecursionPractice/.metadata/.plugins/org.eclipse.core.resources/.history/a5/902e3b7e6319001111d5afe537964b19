@@ -1,0 +1,33 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+
+
+
+public class Recursion {
+
+	public static boolean contains(int[] array, int fromIndex, int toIndex, int target){
+		
+		if(fromIndex > toIndex)
+			return false;
+		else{
+			return array[fromIndex] == target || contains(array,fromIndex+1,toIndex,target);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		int[] array = {3,5,7,11,13};
+		contains(array,0,4,7);
+
+	}
+
+}
