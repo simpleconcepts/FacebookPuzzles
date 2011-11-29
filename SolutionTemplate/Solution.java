@@ -1,12 +1,68 @@
 import java.io.*;
 import java.lang.*;
 import java.util.*;
+import java.util.Comparator;
 
 public class Solution{
 
+    
+    
+    public static void randomSequence(int N, double lo, double hi){
+      
+        
+        // generate and print N numbers between lo and hi
+        for (int i = 0; i < N; i++) {
+          // System.out.printf("%.2f\n", x);
+        }
+        
+    }
+    
+    public static double average(){
+        
+        int count = 0;       // number input values
+        double sum = 0.0;    // sum of input values
+        /*
+        // read data and compute statistics
+        while (!StdIn.isEmpty()) {
+            double value = StdIn.readDouble();
+            sum += value;
+            count++;
+        }
+        
+        // compute the average
+        double average = sum / count;
+        
+        // print results
+        StdOut.println("Average is " + average);
+         */
+		return sum;
+   
+        
+        
+        
+        
+    }
+    
+    
+    // precondition: array a[] is sorted
+    public static int rank(int key, int[] a) {
+        int lo = 0;
+        int hi = a.length - 1;
+        while (lo <= hi) {
+            // Key is in a[lo..hi] or not present.
+            int mid = lo + (hi - lo) / 2;
+            if      (key < a[mid]) hi = mid - 1;
+            else if (key > a[mid]) lo = mid + 1;
+            else return mid;
+        }
+        return -1;
+    }
+    
+    
 
-    public static void solve(){
+    public static void solve(String filename){
 
+    	
 	try{
 	    FileInputStream fstream = new FileInputStream(filename);
 	    DataInputStream in = new DataInputStream(fstream);
@@ -25,6 +81,1914 @@ public class Solution{
 
 
     }
+
+
+
+class Interval1D {
+    public Comparator<Interval1D> LEFT_ENDPOINT_ORDER  = new LeftComparator();
+    public Comparator<Interval1D> RIGHT_ENDPOINT_ORDER = new RightComparator();
+    public Comparator<Interval1D> LENGTH_ORDER         = new LengthComparator();
+    
+    private final double left;
+    private final double right;
+    
+    public Interval1D(double left, double right) {
+        if (left <= right) {
+            this.left  = left;
+            this.right = right;
+        }
+        else throw new RuntimeException("Illegal interval");
+    }
+    
+    // left endpoint
+    public double left() { 
+        return left;
+    }
+    
+    // right endpoint
+    public double right() { 
+        return right;
+    }
+    
+    // does this interval intersect that one?
+    public boolean intersects(Interval1D that) {
+        if (this.right < that.left) return false;
+        if (that.right < this.left) return false;
+        return true;
+    }
+    
+    // does this interval contain x?
+    public boolean contains(double x) {
+        return (left <= x) && (x <= right);
+    }
+    
+    // length of this interval
+    public double length() {
+        return right - left;
+    }
+    
+    // string representation of this interval        
+    public String toString() {
+        return "[" + left + ", " + right + "]";
+    }
+    
+    
+    
+   class LeftComparator implements Comparator<Interval1D> {
+        public int compare(Interval1D a, Interval1D b) {
+            if      (a.left  < b.left)  return -1;
+            else if (a.left  > b.left)  return +1;
+            else if (a.right < b.right) return -1;
+            else if (a.right > b.right) return +1;
+            else                        return  0;
+        }
+    }
+    
+    // ascending order of right endpoint, breaking ties by left endpoint
+   class RightComparator implements Comparator<Interval1D> {
+        public int compare(Interval1D a, Interval1D b) {
+            if      (a.right < b.right) return -1;
+            else if (a.right > b.right) return +1;
+            else if (a.left  < b.left)  return -1;
+            else if (a.left  > b.left)  return +1;
+            else                        return  0;
+        }
+    }
+    
+    // ascending order of left endpoint, breaking ties by right endpoint
+     class LengthComparator implements Comparator<Interval1D> {
+        public int compare(Interval1D a, Interval1D b) {
+            double alen = a.length();
+            double blen = b.length();
+            if      (alen < blen) return -1;
+            else if (alen > blen) return +1;
+            else                  return  0;
+        }
+    }
+    
+    
+    /*
+    
+    // test client
+    public static void main(String[] args) {
+        Interval1D[] intervals = new Interval1D[4];
+        intervals[0] = new Interval1D(15.0, 33.0);
+        intervals[1] = new Interval1D(45.0, 60.0);
+        intervals[2] = new Interval1D(20.0, 70.0);
+        intervals[3] = new Interval1D(46.0, 55.0);
+        
+        StdOut.println("Unsorted");
+        for (int i = 0; i < intervals.length; i++)
+            StdOut.println(intervals[i]);
+        StdOut.println();
+        
+        StdOut.println("Sort by left endpoint");
+        Arrays.sort(intervals, Interval1D.LEFT_ENDPOINT_ORDER);
+        for (int i = 0; i < intervals.length; i++)
+            StdOut.println(intervals[i]);
+        StdOut.println();
+        
+        StdOut.println("Sort by right endpoint");
+        Arrays.sort(intervals, Interval1D.RIGHT_ENDPOINT_ORDER);
+        for (int i = 0; i < intervals.length; i++)
+            StdOut.println(intervals[i]);
+        StdOut.println();
+        
+        StdOut.println("Sort by length");
+        Arrays.sort(intervals, Interval1D.LENGTH_ORDER);
+        for (int i = 0; i < intervals.length; i++)
+            StdOut.println(intervals[i]);
+        StdOut.println();
+    }
+    
+    */
+    
+}
+
+
+public class BinarySearchST<Key extends Comparable<Key>, Value> {
+    private static final int INIT_CAPACITY = 2;
+    private Key[] keys;
+    private Value[] vals;
+    private int N = 0;
+    
+    // create an empty symbol table with default initial capacity
+    public BinarySearchST() { this(INIT_CAPACITY); }   
+    
+    // create an empty symbol table with given initial capacity
+    public BinarySearchST(int capacity) { 
+        keys = (Key[]) new Comparable[capacity]; 
+        vals = (Value[]) new Object[capacity]; 
+    }   
+    
+    // resize the underlying arrays
+    private void resize(int capacity) {
+        assert capacity >= N;
+        Key[]   tempk = (Key[])   new Comparable[capacity];
+        Value[] tempv = (Value[]) new Object[capacity];
+        for (int i = 0; i < N; i++) {
+            tempk[i] = keys[i];
+            tempv[i] = vals[i];
+        }
+        vals = tempv;
+        keys = tempk;
+    }
+    
+    
+    // is the key in the table?
+    public boolean contains(Key key) {
+        return get(key) != null;
+    }
+    
+    // number of key-value pairs in the table
+    public int size() {
+        return N;
+    }
+    
+    // is the symbol table empty?
+    public boolean isEmpty() {
+        return size() == 0;
+    }
+    
+    // return the value associated with the given key, or null if no such key
+    public Value get(Key key) {
+        if (isEmpty()) return null;
+        int i = rank(key); 
+        if (i < N && keys[i].compareTo(key) == 0) return vals[i];
+        return null;
+    } 
+    
+    // return the number of keys in the table that are smaller than given key
+    public int rank(Key key) {
+        int lo = 0, hi = N-1; 
+        while (lo <= hi) { 
+            int m = lo + (hi - lo) / 2; 
+            int cmp = key.compareTo(keys[m]); 
+            if      (cmp < 0) hi = m - 1; 
+            else if (cmp > 0) lo = m + 1; 
+            else return m; 
+        } 
+        return lo;
+    } 
+    
+    
+    // Search for key. Update value if found; grow table if new. 
+    public void put(Key key, Value val)  {
+        if (val == null) { delete(key); return; }
+        
+        int i = rank(key);
+        
+        // key is already in table
+        if (i < N && keys[i].compareTo(key) == 0) {
+            vals[i] = val;
+            return;
+        }
+        
+        // insert new key-value pair
+        if (N == keys.length) resize(2*keys.length);
+        
+        for (int j = N; j > i; j--)  {
+            keys[j] = keys[j-1];
+            vals[j] = vals[j-1];
+        }
+        keys[i] = key;
+        vals[i] = val;
+        N++;
+        
+        assert check();
+    } 
+    
+    
+    // Remove the key-value pair if present
+    public void delete(Key key)  {
+        if (isEmpty()) return;
+        
+        // compute rank
+        int i = rank(key);
+        
+        // key not in table
+        if (i == N || keys[i].compareTo(key) != 0) {
+            return;
+        }
+        
+        for (int j = i; j < N-1; j++)  {
+            keys[j] = keys[j+1];
+            vals[j] = vals[j+1];
+        }
+        
+        N--;
+        keys[N] = null;  // to avoid loitering
+        vals[N] = null;
+        
+        // resize if 1/4 full
+        if (N > 0 && N == keys.length/4) resize(keys.length/2);
+        
+        assert check();
+    } 
+    
+    // delete the minimum key and its associated value
+    public void deleteMin() {
+        if (isEmpty()) throw new RuntimeException("Symbol table underflow error");
+        delete(min());
+    }
+    
+    // delete the maximum key and its associated value
+    public void deleteMax() {
+        if (isEmpty()) throw new RuntimeException("Symbol table underflow error");
+        delete(max());
+    }
+    
+    
+    /*****************************************************************************
+     *  Ordered symbol table methods
+     *****************************************************************************/
+    public Key min() {
+        if (isEmpty()) return null;
+        return keys[0]; 
+    }
+    
+    public Key max() {
+        if (isEmpty()) return null;
+        return keys[N-1];
+    }
+    
+    public Key select(int k) {
+        if (k < 0 || k >= N) return null;
+        return keys[k];
+    }
+    
+    public Key floor(Key key) {
+        int i = rank(key);
+        if (i < N && key.compareTo(keys[i]) == 0) return keys[i];
+        if (i == 0) return null;
+        else return keys[i-1];
+    }
+    
+    public Key ceiling(Key key) {
+        int i = rank(key);
+        if (i == N) return null; 
+        else return keys[i];
+    }
+    
+    public int size(Key lo, Key hi) {
+        if (lo.compareTo(hi) > 0) return 0;
+        if (contains(hi)) return rank(hi) - rank(lo) + 1;
+        else              return rank(hi) - rank(lo);
+    }
+    
+    public Iterable<Key> keys() {
+        return keys(min(), max());
+    }
+    
+    public Iterable<Key> keys(Key lo, Key hi) {
+        Queue<Key> queue = new Queue<Key>(); 
+        if (lo == null && hi == null) return queue;
+        if (lo == null) throw new RuntimeException("lo is null in keys()");
+        if (hi == null) throw new RuntimeException("hi is null in keys()");
+        if (lo.compareTo(hi) > 0) return queue;
+        for (int i = rank(lo); i < rank(hi); i++) 
+            queue.enqueue(keys[i]);
+        if (contains(hi)) queue.enqueue(keys[rank(hi)]);
+        return queue; 
+    }
+    
+    
+    /*****************************************************************************
+     *  Check internal invariants
+     *****************************************************************************/
+    
+    private boolean check() {
+        return isSorted() && rankCheck();
+    }
+    
+    // are the items in the array in ascending order?
+    private boolean isSorted() {
+        for (int i = 1; i < size(); i++)
+            if (keys[i].compareTo(keys[i-1]) < 0) return false;
+        return true;
+    }
+    
+    // check that rank(select(i)) = i
+    private boolean rankCheck() {
+        for (int i = 0; i < size(); i++)
+            if (i != rank(select(i))) return false;
+        for (int i = 0; i < size(); i++)
+            if (keys[i].compareTo(select(rank(keys[i]))) != 0) return false;
+        return true;
+    }
+    
+    
+    /*****************************************************************************
+     *  Test client
+     *****************************************************************************/
+
+/*    
+    BinarySearchST<String, Integer> st = new BinarySearchST<String, Integer>();
+        for (int i = 0; !StdIn.isEmpty(); i++) {
+            String key = StdIn.readString();
+            st.put(key, i);
+        }
+        for (String s : st.keys())
+            StdOut.println(s + " " + st.get(s));
+    */
+    
+    
+}
+
+class Queue<Item> implements Iterable<Item> {
+    private int N;         // number of elements on queue
+    private Node first;    // beginning of queue
+    private Node last;     // end of queue
+
+    // helper linked list class
+    private class Node {
+        private Item item;
+        private Node next;
+    }
+
+   /**
+     * Create an empty queue.
+     */
+    public Queue() {
+        first = null;
+        last  = null;
+        N = 0;
+        assert check();
+    }
+
+   /**
+     * Is the queue empty?
+     */
+    public boolean isEmpty() {
+        return first == null;
+    }
+
+   /**
+     * Return the number of items in the queue.
+     */
+    public int size() {
+        return N;     
+    }
+
+   /**
+     * Return the item least recently added to the queue.
+     * Throw an exception if the queue is empty.
+     */
+    public Item peek() {
+        if (isEmpty()) throw new RuntimeException("Queue underflow");
+        return first.item;
+    }
+
+   /**
+     * Add the item to the queue.
+     */
+    public void enqueue(Item item) {
+        Node oldlast = last;
+        last = new Node();
+        last.item = item;
+        last.next = null;
+        if (isEmpty()) first = last;
+        else           oldlast.next = last;
+        N++;
+        assert check();
+    }
+
+   /**
+     * Remove and return the item on the queue least recently added.
+     * Throw an exception if the queue is empty.
+     */
+    public Item dequeue() {
+        if (isEmpty()) throw new RuntimeException("Queue underflow");
+        Item item = first.item;
+        first = first.next;
+        N--;
+        if (isEmpty()) last = null;   // to avoid loitering
+        assert check();
+        return item;
+    }
+
+   /**
+     * Return string representation.
+     */
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        for (Item item : this)
+            s.append(item + " ");
+        return s.toString();
+    } 
+
+    // check internal invariants
+    private boolean check() {
+        if (N == 0) {
+            if (first != null) return false;
+            if (last  != null) return false;
+        }
+        else if (N == 1) {
+            if (first == null || last == null) return false;
+            if (first != last)                 return false;
+            if (first.next != null)            return false;
+        }
+        else {
+            if (first == last)      return false;
+            if (first.next == null) return false;
+            if (last.next  != null) return false;
+
+            // check internal consistency of instance variable N
+            int numberOfNodes = 0;
+            for (Node x = first; x != null; x = x.next) {
+               numberOfNodes++;
+            }
+            if (numberOfNodes != N) return false;
+
+            // check internal consistency of instance variable last
+            Node lastNode = first;
+            while (lastNode.next != null) {
+               lastNode = lastNode.next;
+            }
+            if (last != lastNode) return false;
+        }
+
+        return true;
+    } 
+ 
+
+   /**
+     * Return an iterator that iterates over the items on the queue in FIFO order.
+     */
+    public Iterator<Item> iterator()  {
+        return new ListIterator();  
+    }
+
+    // an iterator, doesn't implement remove() since it's optional
+    private class ListIterator implements Iterator<Item> {
+        private Node current = first;
+
+        public boolean hasNext()  { return current != null;                     }
+        public void remove()      { throw new UnsupportedOperationException();  }
+
+        public Item next() {
+            if (!hasNext()) throw new NoSuchElementException();
+            Item item = current.item;
+            current = current.next; 
+            return item;
+        }
+    }
+
+
+   /**
+     * A test client.
+     */
+    /*
+        Queue<String> q = new Queue<String>();
+        while (!StdIn.isEmpty()) {
+            String item = StdIn.readString();
+            if (!item.equals("-")) q.enqueue(item);
+            else if (!q.isEmpty()) StdOut.print(q.dequeue() + " ");
+        }
+        StdOut.println("(" + q.size() + " left on queue)");
+    */
+    
+}
+
+
+ class LinearProbingHashST<Key, Value> {
+    private static final int INIT_CAPACITY = 4;
+    
+    private int N;           // number of key-value pairs in the symbol table
+    private int M;           // size of linear probing table
+    private Key[] keys;      // the keys
+    private Value[] vals;    // the values
+    
+    
+    // create an empty hash table - use 16 as default size
+    public LinearProbingHashST() {
+        this(INIT_CAPACITY);
+    }
+    
+    // create linear proving hash table of given capacity
+    public LinearProbingHashST(int capacity) {
+        M = capacity;
+        keys = (Key[])   new Object[M];
+        vals = (Value[]) new Object[M];
+    }
+    
+    // return the number of key-value pairs in the symbol table
+    public int size() {
+        return N;
+    }
+    
+    // is the symbol table empty?
+    public boolean isEmpty() {
+        return size() == 0;
+    }
+    
+    // does a key-value pair with the given key exist in the symbol table?
+    public boolean contains(Key key) {
+        return get(key) != null;
+    }
+    
+    // hash function for keys - returns value between 0 and M-1
+    private int hash(Key key) {
+        return (key.hashCode() & 0x7fffffff) % M;
+    }
+    
+    // resize the hash table to the given capacity by re-hashing all of the keys
+    private void resize(int capacity) {
+        LinearProbingHashST<Key, Value> temp = new LinearProbingHashST<Key, Value>(capacity);
+        for (int i = 0; i < M; i++) {
+            if (keys[i] != null) {
+                temp.put(keys[i], vals[i]);
+            }
+        }
+        keys = temp.keys;
+        vals = temp.vals;
+        M    = temp.M;
+    }
+    
+    // insert the key-value pair into the symbol table
+    public void put(Key key, Value val) {
+        if (val == null) delete(key);
+        
+        // double table size if 50% full
+        if (N >= M/2) resize(2*M);
+        
+        int i;
+        for (i = hash(key); keys[i] != null; i = (i + 1) % M) {
+            if (keys[i].equals(key)) { vals[i] = val; return; }
+        }
+        keys[i] = key;
+        vals[i] = val;
+        N++;
+    }
+    
+    // return the value associated with the given key, null if no such value
+    public Value get(Key key) {
+        for (int i = hash(key); keys[i] != null; i = (i + 1) % M) 
+            if (keys[i].equals(key))
+                return vals[i];
+        return null;
+    }
+    
+    // delete the key (and associated value) from the symbol table
+    public void delete(Key key) {
+        if (!contains(key)) return;
+        
+        // find position i of key
+        int i = hash(key);
+        while (!key.equals(keys[i])) {
+            i = (i + 1) % M;
+        }
+        
+        // delete key and associated value
+        keys[i] = null;
+        vals[i] = null;
+        
+        // rehash all keys in same cluster
+        i = (i + 1) % M;
+        while (keys[i] != null) {
+            // delete keys[i] an vals[i] and reinsert
+            Key   keyToRehash = keys[i];
+            Value valToRehash = vals[i];
+            keys[i] = null;
+            vals[i] = null;
+            N--;  
+            put(keyToRehash, valToRehash);
+            i = (i + 1) % M;
+        }
+        
+        N--;        
+        
+        // halves size of array if it's 12.5% full or less
+        if (N > 0 && N <= M/8) resize(M/2);
+        
+        assert check();
+    }
+    
+    // return all of the keys as in Iterable
+    public Iterable<Key> keys() {
+        Queue<Key> queue = new Queue<Key>();
+        for (int i = 0; i < M; i++)
+            if (keys[i] != null) queue.enqueue(keys[i]);
+        return queue;
+    }
+    
+    // integrity check - don't check after each put() because
+    // integrity not maintained during a delete()
+    private boolean check() {
+        
+        // check that hash table is at most 50% full
+        if (M < 2*N) {
+            System.err.println("Hash table size M = " + M + "; array size N = " + N);
+            return false;
+        }
+        
+        // check that each key in table can be found by get()
+        for (int i = 0; i < M; i++) {
+            if (keys[i] == null) continue;
+            else if (get(keys[i]) != vals[i]) {
+                System.err.println("get[" + keys[i] + "] = " + get(keys[i]) + "; vals[i] = " + vals[i]);
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    
+    /***********************************************************************
+     *  Unit test client.
+     ***********************************************************************/
+  /*
+        LinearProbingHashST<String, Integer> st = new LinearProbingHashST<String, Integer>();
+        for (int i = 0; !StdIn.isEmpty(); i++) {
+            String key = StdIn.readString();
+            st.put(key, i);
+        }
+        
+        // print keys
+        for (String s : st.keys()) 
+            StdOut.println(s + " " + st.get(s)); 
+    */
+}
+
+class MaxPQ<Key> implements Iterable<Key> {
+    private Key[] pq;                    // store items at indices 1 to N
+    private int N;                       // number of items on priority queue
+    private Comparator<Key> comparator;  // optional Comparator
+    
+    /**
+     * Create an empty priority queue with the given initial capacity.
+     */
+    public MaxPQ(int capacity) {
+        pq = (Key[]) new Object[capacity + 1];
+        N = 0;
+    }
+    
+    /**
+     * Create an empty priority queue.
+     */
+    public MaxPQ() { this(1); }
+    
+    /**
+     * Create an empty priority queue with the given initial capacity,
+     * using the given comparator.
+     */
+    public MaxPQ(int initCapacity, Comparator<Key> comparator) {
+        this.comparator = comparator;
+        pq = (Key[]) new Object[initCapacity + 1];
+        N = 0;
+    }
+    
+    /**
+     * Create an empty priority queue using the given comparator.
+     */
+    public MaxPQ(Comparator<Key> comparator) { this(1, comparator); }
+    
+    /**
+     * Create a priority queue with the given items.
+     * Takes time proportional to the number of items using sink-based heap construction.
+     */
+    public MaxPQ(Key[] keys) {
+        N = keys.length;
+        pq = (Key[]) new Object[keys.length + 1]; 
+        for (int i = 0; i < N; i++)
+            pq[i+1] = keys[i];
+        for (int k = N/2; k >= 1; k--)
+            sink(k);
+        assert isMaxHeap();
+    }
+    
+    
+    
+    /**
+     * Is the priority queue empty?
+     */
+    public boolean isEmpty() {
+        return N == 0;
+    }
+    
+    /**
+     * Return the number of items on the priority queue.
+     */
+    public int size() {
+        return N;
+    }
+    
+    /**
+     * Return the largest key on the priority queue.
+     * Throw an exception if the priority queue is empty.
+     */
+    public Key max() {
+        if (isEmpty()) throw new RuntimeException("Priority queue underflow");
+        return pq[1];
+    }
+    
+    // helper function to double the size of the heap array
+    private void resize(int capacity) {
+        assert capacity > N;
+        Key[] temp = (Key[]) new Object[capacity];
+        for (int i = 1; i <= N; i++) temp[i] = pq[i];
+        pq = temp;
+    }
+    
+    
+    /**
+     * Add a new key to the priority queue.
+     */
+    public void insert(Key x) {
+        
+        // double size of array if necessary
+        if (N >= pq.length - 1) resize(2 * pq.length);
+        
+        // add x, and percolate it up to maintain heap invariant
+        pq[++N] = x;
+        swim(N);
+        assert isMaxHeap();
+    }
+    
+    /**
+     * Delete and return the largest key on the priority queue.
+     * Throw an exception if the priority queue is empty.
+     */
+    public Key delMax() {
+        if (N == 0) throw new RuntimeException("Priority queue underflow");
+        Key max = pq[1];
+        exch(1, N--);
+        sink(1);
+        pq[N+1] = null;     // to avoid loiterig and help with garbage collection
+        if ((N > 0) && (N == (pq.length - 1) / 4)) resize(pq.length / 2);
+        assert isMaxHeap();
+        return max;
+    }
+    
+    
+    /***********************************************************************
+     * Helper functions to restore the heap invariant.
+     **********************************************************************/
+    
+    private void swim(int k) {
+        while (k > 1 && less(k/2, k)) {
+            exch(k, k/2);
+            k = k/2;
+        }
+    }
+    
+    private void sink(int k) {
+        while (2*k <= N) {
+            int j = 2*k;
+            if (j < N && less(j, j+1)) j++;
+            if (!less(k, j)) break;
+            exch(k, j);
+            k = j;
+        }
+    }
+    
+    /***********************************************************************
+     * Helper functions for compares and swaps.
+     **********************************************************************/
+    private boolean less(int i, int j) {
+        if (comparator == null) {
+            return ((Comparable<Key>) pq[i]).compareTo(pq[j]) < 0;
+        }
+        else {
+            return comparator.compare(pq[i], pq[j]) < 0;
+        }
+    }
+    
+    private void exch(int i, int j) {
+        Key swap = pq[i];
+        pq[i] = pq[j];
+        pq[j] = swap;
+    }
+    
+    // is pq[1..N] a max heap?
+    private boolean isMaxHeap() {
+        return isMaxHeap(1);
+    }
+    
+    // is subtree of pq[1..N] rooted at k a max heap?
+    private boolean isMaxHeap(int k) {
+        if (k > N) return true;
+        int left = 2*k, right = 2*k + 1;
+        if (left  <= N && less(k, left))  return false;
+        if (right <= N && less(k, right)) return false;
+        return isMaxHeap(left) && isMaxHeap(right);
+    }
+    
+    
+    /***********************************************************************
+     * Iterator
+     **********************************************************************/
+    
+    /**
+     * Return an iterator that iterates over all of the keys on the priority queue
+     * in descending order.
+     * <p>
+     * The iterator doesn't implement <tt>remove()</tt> since it's optional.
+     */
+    public Iterator<Key> iterator() { return new HeapIterator(); }
+    
+    private class HeapIterator implements Iterator<Key> {
+        
+        // create a new pq
+        private MaxPQ<Key> copy;
+        
+        // add all items to copy of heap
+        // takes linear time since already in heap order so no keys move
+        public HeapIterator() {
+            if (comparator == null) copy = new MaxPQ<Key>(size());
+            else                    copy = new MaxPQ<Key>(size(), comparator);
+            for (int i = 1; i <= N; i++)
+                copy.insert(pq[i]);
+        }
+        
+        public boolean hasNext()  { return !copy.isEmpty();                     }
+        public void remove()      { throw new UnsupportedOperationException();  }
+        
+        public Key next() {
+            if (!hasNext()) throw new NoSuchElementException();
+            return copy.delMax();
+        }
+    }
+    
+    /**
+     * A test client.
+     */
+    /*
+        MaxPQ<String> pq = new MaxPQ<String>();
+        while (!StdIn.isEmpty()) {
+            String item = StdIn.readString();
+            if (!item.equals("-")) pq.insert(item);
+            else if (!pq.isEmpty()) StdOut.print(pq.delMax() + " ");
+        }
+        StdOut.println("(" + pq.size() + " left on pq)");
+    }
+    */
+}
+
+
+class Edge implements Comparable<Edge> { 
+    
+    private final int v;
+    private final int w;
+    private final double weight;
+    
+    /**
+     * Create an edge between v and w with given weight.
+     */
+    public Edge(int v, int w, double weight) {
+        this.v = v;
+        this.w = w;
+        this.weight = weight;
+    }
+    
+    /**
+     * Return the weight of this edge.
+     */
+    public double weight() {
+        return weight;
+    }
+    
+    /**
+     * Return either endpoint of this edge.
+     */
+    public int either() {
+        return v;
+    }
+    
+    /**
+     * Return the endpoint of this edge that is different from the given vertex
+     * (unless a self-loop).
+     */
+    public int other(int vertex) {
+        if      (vertex == v) return w;
+        else if (vertex == w) return v;
+        else throw new RuntimeException("Illegal endpoint");
+    }
+    
+    /**
+     * Compare edges by weight.
+     */
+    public int compareTo(Edge that) {
+        if      (this.weight() < that.weight()) return -1;
+        else if (this.weight() > that.weight()) return +1;
+        else                                    return  0;
+    }
+    
+    
+    /**
+     * Return a string representation of this edge.
+     */
+    public String toString() {
+        return String.format("%d-%d %.5f", v, w, weight);
+    }
+    
+    
+    /**
+     * Test client.
+     */
+    /*
+        Edge e = new Edge(12, 23, 3.14);
+        StdOut.println(e);
+  */
+}
+
+class KMP {
+    private final int R;       // the radix
+    private int[][] dfa;       // the KMP automoton
+    
+    private char[] pattern;    // either the character array for the pattern
+    private String pat;        // or the pattern string
+    
+    // create the DFA from a String
+    public KMP(String pat) {
+        this.R = 256;
+        this.pat = pat;
+        
+        // build DFA from pattern
+        int M = pat.length();
+        dfa = new int[R][M]; 
+        dfa[pat.charAt(0)][0] = 1; 
+        for (int X = 0, j = 1; j < M; j++) {
+            for (int c = 0; c < R; c++) 
+                dfa[c][j] = dfa[c][X];     // Copy mismatch cases. 
+            dfa[pat.charAt(j)][j] = j+1;   // Set match case. 
+            X = dfa[pat.charAt(j)][X];     // Update restart state. 
+        } 
+    } 
+    
+    // create the DFA from a character array over R-character alphabet
+    public KMP(char[] pattern, int R) {
+        this.R = R;
+        this.pattern = new char[pattern.length];
+        for (int j = 0; j < pattern.length; j++)
+            this.pattern[j] = pattern[j];
+        
+        // build DFA from pattern
+        int M = pattern.length;
+        dfa = new int[R][M]; 
+        dfa[pattern[0]][0] = 1; 
+        for (int X = 0, j = 1; j < M; j++) {
+            for (int c = 0; c < R; c++) 
+                dfa[c][j] = dfa[c][X];     // Copy mismatch cases. 
+            dfa[pattern[j]][j] = j+1;      // Set match case. 
+            X = dfa[pattern[j]][X];        // Update restart state. 
+        } 
+    } 
+    
+    // return offset of first match; N if no match
+    public int search(String txt) {
+        
+        // simulate operation of DFA on text
+        int M = pat.length();
+        int N = txt.length();
+        int i, j;
+        for (i = 0, j = 0; i < N && j < M; i++) {
+            j = dfa[txt.charAt(i)][j];
+        }
+        if (j == M) return i - M;    // found
+        return N;                    // not found
+    }
+    
+    
+    // return offset of first match; N if no match
+    public int search(char[] text) {
+        
+        // simulate operation of DFA on text
+        int M = pattern.length;
+        int N = text.length;
+        for (int i = 0, j = 0; i < N; i++) {
+            j = dfa[text[i]][j];
+            if (j == M) return i - M + 1;    // found
+        }
+        return N;                            // not found
+    }
+    
+    /*
+    
+    // test client
+    public static void main(String[] args) {
+        String pat = args[0];
+        String txt = args[1];
+        char[] pattern = pat.toCharArray();
+        char[] text    = txt.toCharArray();
+        
+        KMP kmp1 = new KMP(pat);
+        int offset1 = kmp1.search(txt);
+        
+        KMP kmp2 = new KMP(pattern, 256);
+        int offset2 = kmp2.search(text);
+        
+        // print results
+        StdOut.println("text:    " + txt);
+        
+        StdOut.print("pattern: ");
+        for (int i = 0; i < offset1; i++)
+            StdOut.print(" ");
+        StdOut.println(pat);
+        
+        StdOut.print("pattern: ");
+        for (int i = 0; i < offset2; i++)
+            StdOut.print(" ");
+        StdOut.println(pat);
+    }
+    
+     */
+    
+}
+
+
+
+
+
+
+class KruskalMST {
+    private double weight;  // weight of MST
+    private Queue<Edge> mst = new Queue<Edge>();  // edges in MST
+    
+    // Kruskal's algorithm
+    public KruskalMST(EdgeWeightedGraph G) {
+        // more efficient to build heap by passing array of edges
+        MinPQ<Edge> pq = new MinPQ<Edge>();
+        for (Edge e : G.edges()) {
+            pq.insert(e);
+        }
+        
+        // run greedy algorithm
+        UF uf = new UF(G.V());
+        while (!pq.isEmpty() && mst.size() < G.V() - 1) {
+            Edge e = pq.delMin();
+            int v = e.either();
+            int w = e.other(v);
+            if (!uf.connected(v, w)) { // v-w does not create a cycle
+                uf.union(v, w);  // merge v and w components
+                mst.enqueue(e);  // add edge e to mst
+                weight += e.weight();
+            }
+        }
+        
+        // check optimality conditions
+        assert check(G);
+    }
+    
+    // edges in minimum spanning forest as an Iterable
+    public Iterable<Edge> edges() {
+        return mst;
+    }
+    
+    // weight of minimum spanning forest
+    public double weight() {
+        return weight;
+    }
+    
+    // check optimality conditions (takes time proportional to E V lg* V)
+    private boolean check(EdgeWeightedGraph G) {
+        
+        // check total weight
+        double total = 0.0;
+        for (Edge e : edges()) {
+            total += e.weight();
+        }
+        double EPSILON = 1E-12;
+        if (Math.abs(total - weight()) > EPSILON) {
+            System.err.printf("Weight of edges does not equal weight(): %f vs. %f\n", total, weight());
+            return false;
+        }
+        
+        // check that it is acyclic
+        UF uf = new UF(G.V());
+        for (Edge e : edges()) {
+            int v = e.either(), w = e.other(v);
+            if (uf.connected(v, w)) {
+                System.err.println("Not a forest");
+                return false;
+            }
+            uf.union(v, w);
+        }
+        
+        // check that it is a spanning forest
+        for (Edge e : edges()) {
+            int v = e.either(), w = e.other(v);
+            if (!uf.connected(v, w)) {
+                System.err.println("Not a spanning forest");
+                return false;
+            }
+        }
+        
+        // check that it is a minimal spanning forest (cut optimality conditions)
+        for (Edge e : edges()) {
+            int v = e.either(), w = e.other(v);
+            
+            // all edges in MST except e
+            uf = new UF(G.V());
+            for (Edge f : mst) {
+                int x = f.either(), y = f.other(x);
+                if (f != e) uf.union(x, y);
+            }
+            
+            // check that e is min weight edge in crossing cut
+            for (Edge f : G.edges()) {
+                int x = f.either(), y = f.other(x);
+                if (!uf.connected(x, y)) {
+                    if (f.weight() < e.weight()) {
+                        System.err.println("Edge " + f + " violates cut optimality conditions");
+                        return false;
+                    }
+                }
+            }
+            
+        }
+        
+        return true;
+    }
+    
+    /*
+        In in = new In(args[0]);
+        EdgeWeightedGraph G = new EdgeWeightedGraph(in);
+        KruskalMST mst = new KruskalMST(G);
+        for (Edge e : mst.edges()) {
+            StdOut.println(e);
+        }
+        StdOut.printf("%.5f\n", mst.weight());
+    */
+    
+}
+class UF {
+    private int[] id;    // id[i] = parent of i
+    private int[] sz;    // sz[i] = number of objects in subtree rooted at i
+    private int count;   // number of components
+
+   /**
+     * Create an empty union find data structure with N isolated sets.
+     */
+    public UF(int N) {
+        count = N;
+        id = new int[N];
+        sz = new int[N];
+        for (int i = 0; i < N; i++) {
+            id[i] = i;
+            sz[i] = 1;
+        }
+    }
+
+   /**
+     * Return the id of component corresponding to object p.
+     */
+    public int find(int p) {
+        while (p != id[p])
+            p = id[p];
+        return p;
+    }
+
+   /**
+     * Return the number of disjoint sets.
+     */
+    public int count() {
+        return count;
+    }
+
+  
+   /**
+     * Are objects p and q in the same set?
+     */
+    public boolean connected(int p, int q) {
+        return find(p) == find(q);
+    }
+
+  
+   /**
+     * Replace sets containing p and q with their union.
+     */
+    public void union(int p, int q) {
+        int i = find(p);
+        int j = find(q);
+        if (i == j) return;
+
+        // make smaller root point to larger one
+        if   (sz[i] < sz[j]) { id[i] = j; sz[j] += sz[i]; }
+        else                 { id[j] = i; sz[i] += sz[j]; }
+        count--;
+    }
+
+
+    /*
+        int N = StdIn.readInt();
+        UF uf = new UF(N);
+
+        // read in a sequence of pairs of integers (each in the range 0 to N-1),
+         // calling find() for each pair: If the members of the pair are not already
+        // call union() and print the pair.
+        while (!StdIn.isEmpty()) {
+            int p = StdIn.readInt();
+            int q = StdIn.readInt();
+            if (uf.connected(p, q)) continue;
+            uf.union(p, q);
+            StdOut.println(p + " " + q);
+        }
+        StdOut.println("# components: " + uf.count());
+    }
+    */
+
+}
+
+
+class Bag<Item> implements Iterable<Item> {
+    private int N;         // number of elements in bag
+    private Node first;    // beginning of bag
+
+    // helper linked list class
+    private class Node {
+        private Item item;
+        private Node next;
+    }
+
+   /**
+     * Create an empty stack.
+     */
+    public Bag() {
+        first = null;
+        N = 0;
+        assert check();
+    }
+
+   /**
+     * Is the BAG empty?
+     */
+    public boolean isEmpty() {
+        return first == null;
+    }
+
+   /**
+     * Return the number of items in the bag.
+     */
+    public int size() {
+        return N;
+    }
+
+   /**
+     * Add the item to the bag.
+     */
+    public void add(Item item) {
+        Node oldfirst = first;
+        first = new Node();
+        first.item = item;
+        first.next = oldfirst;
+        N++;
+        assert check();
+    }
+
+    // check internal invariants
+    private boolean check() {
+        if (N == 0) {
+            if (first != null) return false;
+        }
+        else if (N == 1) {
+            if (first == null)      return false;
+            if (first.next != null) return false;
+        }
+        else {
+            if (first.next == null) return false;
+        }
+
+        // check internal consistency of instance variable N
+        int numberOfNodes = 0;
+        for (Node x = first; x != null; x = x.next) {
+            numberOfNodes++;
+        }
+        if (numberOfNodes != N) return false;
+
+        return true;
+    } 
+
+
+   /**
+     * Return an iterator that iterates over the items in the bag.
+     */
+    public Iterator<Item> iterator()  {
+        return new ListIterator();  
+    }
+
+    // an iterator, doesn't implement remove() since it's optional
+    private class ListIterator implements Iterator<Item> {
+        private Node current = first;
+
+        public boolean hasNext()  { return current != null;                     }
+        public void remove()      { throw new UnsupportedOperationException();  }
+
+        public Item next() {
+            if (!hasNext()) throw new NoSuchElementException();
+            Item item = current.item;
+            current = current.next; 
+            return item;
+        }
+    }
+
+}
+
+
+class EdgeWeightedGraph {
+    private final int V;
+    private int E;
+    private Bag<Edge>[] adj;
+    
+   /**
+     * Create an empty edge-weighted graph with V vertices.
+     */
+    public EdgeWeightedGraph(int V) {
+        if (V < 0) throw new RuntimeException("Number of vertices must be nonnegative");
+        this.V = V;
+        this.E = 0;
+        adj = (Bag<Edge>[]) new Bag[V];
+        for (int v = 0; v < V; v++) {
+            adj[v] = new Bag<Edge>();
+        }
+    }
+
+   /**
+     * Create a random edge-weighted graph with V vertices and E edges.
+     * The expected running time is proportional to V + E.
+     */
+    public EdgeWeightedGraph(int V, int E) {
+        this(V);
+        if (E < 0) throw new RuntimeException("Number of edges must be nonnegative");
+        for (int i = 0; i < E; i++) {
+            int v = (int) (Math.random() * V);
+            int w = (int) (Math.random() * V);
+            double weight = Math.round(100 * Math.random()) / 100.0;
+            Edge e = new Edge(v, w, weight);
+            addEdge(e);
+        }
+    }
+
+   /**
+     * Create a weighted graph from input stream.
+     */
+    /*
+    public EdgeWeightedGraph(In in) {
+        this(in.readInt());
+        int E = in.readInt();
+        for (int i = 0; i < E; i++) {
+            int v = in.readInt();
+            int w = in.readInt();
+            double weight = in.readDouble();
+            Edge e = new Edge(v, w, weight);
+            addEdge(e);
+        }
+    }
+    
+    */
+
+   /**
+     * Copy constructor.
+     */
+    public EdgeWeightedGraph(EdgeWeightedGraph G) {
+        this(G.V());
+        this.E = G.E();
+        for (int v = 0; v < G.V(); v++) {
+            // reverse so that adjacency list is in same order as original
+            Stack<Edge> reverse = new Stack<Edge>();
+            for (Edge e : G.adj[v]) {
+                reverse.push(e);
+            }
+            for (Edge e : reverse) {
+                adj[v].add(e);
+            }
+        }
+    }
+
+   /**
+     * Return the number of vertices in this graph.
+     */
+    public int V() {
+        return V;
+    }
+
+   /**
+     * Return the number of edges in this graph.
+     */
+    public int E() {
+        return E;
+    }
+
+
+   /**
+     * Add the edge e to this graph.
+     */
+    public void addEdge(Edge e) {
+        int v = e.either();
+        int w = e.other(v);
+        adj[v].add(e);
+        adj[w].add(e);
+        E++;
+    }
+
+
+   /**
+     * Return the edges incident to vertex v as an Iterable.
+     * To iterate over the edges incident to vertex v, use foreach notation:
+     * <tt>for (Edge e : graph.adj(v))</tt>.
+     */
+    public Iterable<Edge> adj(int v) {
+        return adj[v];
+    }
+
+   /**
+     * Return all edges in this graph as an Iterable.
+     * To iterate over the edges, use foreach notation:
+     * <tt>for (Edge e : graph.edges())</tt>.
+     */
+    public Iterable<Edge> edges() {
+        Bag<Edge> list = new Bag<Edge>();
+        for (int v = 0; v < V; v++) {
+            int selfLoops = 0;
+            for (Edge e : adj(v)) {
+                if (e.other(v) > v) {
+                    list.add(e);
+                }
+                // only add one copy of each self loop
+                else if (e.other(v) == v) {
+                    if (selfLoops % 2 == 0) list.add(e);
+                    selfLoops++;
+                }
+            }
+        }
+        return list;
+    }
+
+
+
+   /**
+     * Return a string representation of this graph.
+     */
+    public String toString() {
+        String NEWLINE = System.getProperty("line.separator");
+        StringBuilder s = new StringBuilder();
+        s.append(V + " " + E + NEWLINE);
+        for (int v = 0; v < V; v++) {
+            s.append(v + ": ");
+            for (Edge e : adj[v]) {
+                s.append(e + "  ");
+            }
+            s.append(NEWLINE);
+        }
+        return s.toString();
+    }
+
+   /**
+     * Test client.
+     */
+   /*
+        In in = new In(args[0]);
+        EdgeWeightedGraph G = new EdgeWeightedGraph(in);
+        StdOut.println(G);
+    */
+
+}
+
+
+
+class MinPQ<Key> implements Iterable<Key> {
+    private Key[] pq;                    // store items at indices 1 to N
+    private int N;                       // number of items on priority queue
+    private Comparator<Key> comparator;  // optional comparator
+
+   /**
+     * Create an empty priority queue with the given initial capacity.
+     */
+    public MinPQ(int initCapacity) {
+        pq = (Key[]) new Object[initCapacity + 1];
+        N = 0;
+    }
+
+   /**
+     * Create an empty priority queue.
+     */
+    public MinPQ() { this(1); }
+
+   /**
+     * Create an empty priority queue with the given initial capacity,
+     * using the given comparator.
+     */
+    public MinPQ(int initCapacity, Comparator<Key> comparator) {
+        this.comparator = comparator;
+        pq = (Key[]) new Object[initCapacity + 1];
+        N = 0;
+    }
+
+   /**
+     * Create an empty priority queue using the given comparator.
+     */
+    public MinPQ(Comparator<Key> comparator) { this(1, comparator); }
+
+   /**
+     * Create a priority queue with the given items.
+     * Takes time proportional to the number of items using sink-based heap construction.
+     */
+    public MinPQ(Key[] keys) {
+        N = keys.length;
+        pq = (Key[]) new Object[keys.length + 1];
+        for (int i = 0; i < N; i++)
+            pq[i+1] = keys[i];
+        for (int k = N/2; k >= 1; k--)
+            sink(k);
+        assert isMinHeap();
+    }
+
+   /**
+     * Is the priority queue empty?
+     */
+    public boolean isEmpty() {
+        return N == 0;
+    }
+
+   /**
+     * Return the number of items on the priority queue.
+     */
+    public int size() {
+        return N;
+    }
+
+   /**
+     * Return the smallest key on the priority queue.
+     * Throw an exception if no such key exists because the priority queue is empty.
+     */
+    public Key min() {
+        if (isEmpty()) throw new RuntimeException("Priority queue underflow");
+        return pq[1];
+    }
+
+    // helper function to double the size of the heap array
+    private void resize(int capacity) {
+        assert capacity > N;
+        Key[] temp = (Key[]) new Object[capacity];
+        for (int i = 1; i <= N; i++) temp[i] = pq[i];
+        pq = temp;
+    }
+
+   /**
+     * Add a new key to the priority queue.
+     */
+    public void insert(Key x) {
+        // double size of array if necessary
+        if (N == pq.length - 1) resize(2 * pq.length);
+
+        // add x, and percolate it up to maintain heap invariant
+        pq[++N] = x;
+        swim(N);
+        assert isMinHeap();
+    }
+
+   /**
+     * Delete and return the smallest key on the priority queue.
+     * Throw an exception if no such key exists because the priority queue is empty.
+     */
+    public Key delMin() {
+        if (N == 0) throw new RuntimeException("Priority queue underflow");
+        exch(1, N);
+        Key min = pq[N--];
+        sink(1);
+        pq[N+1] = null;         // avoid loitering and help with garbage collection
+        if ((N > 0) && (N == (pq.length - 1) / 4)) resize(pq.length  / 2);
+        assert isMinHeap();
+        return min;
+    }
+
+
+   /***********************************************************************
+    * Helper functions to restore the heap invariant.
+    **********************************************************************/
+
+    private void swim(int k) {
+        while (k > 1 && greater(k/2, k)) {
+            exch(k, k/2);
+            k = k/2;
+        }
+    }
+
+    private void sink(int k) {
+        while (2*k <= N) {
+            int j = 2*k;
+            if (j < N && greater(j, j+1)) j++;
+            if (!greater(k, j)) break;
+            exch(k, j);
+            k = j;
+        }
+    }
+
+   /***********************************************************************
+    * Helper functions for compares and swaps.
+    **********************************************************************/
+    private boolean greater(int i, int j) {
+        if (comparator == null) {
+            return ((Comparable<Key>) pq[i]).compareTo(pq[j]) > 0;
+        }
+        else {
+            return comparator.compare(pq[i], pq[j]) > 0;
+        }
+    }
+
+    private void exch(int i, int j) {
+        Key swap = pq[i];
+        pq[i] = pq[j];
+        pq[j] = swap;
+    }
+
+    // is pq[1..N] a min heap?
+    private boolean isMinHeap() {
+        return isMinHeap(1);
+    }
+
+    // is subtree of pq[1..N] rooted at k a min heap?
+    private boolean isMinHeap(int k) {
+        if (k > N) return true;
+        int left = 2*k, right = 2*k + 1;
+        if (left  <= N && greater(k, left))  return false;
+        if (right <= N && greater(k, right)) return false;
+        return isMinHeap(left) && isMinHeap(right);
+    }
+
+
+   /***********************************************************************
+    * Iterators
+    **********************************************************************/
+
+   /**
+     * Return an iterator that iterates over all of the keys on the priority queue
+     * in ascending order.
+     * <p>
+     * The iterator doesn't implement <tt>remove()</tt> since it's optional.
+     */
+    public Iterator<Key> iterator() { return new HeapIterator(); }
+
+    private class HeapIterator implements Iterator<Key> {
+        // create a new pq
+        private MinPQ<Key> copy;
+
+        // add all items to copy of heap
+        // takes linear time since already in heap order so no keys move
+        public HeapIterator() {
+            if (comparator == null) copy = new MinPQ<Key>(size());
+            else                    copy = new MinPQ<Key>(size(), comparator);
+            for (int i = 1; i <= N; i++)
+                copy.insert(pq[i]);
+        }
+
+        public boolean hasNext()  { return !copy.isEmpty();                     }
+        public void remove()      { throw new UnsupportedOperationException();  }
+
+        public Key next() {
+            if (!hasNext()) throw new NoSuchElementException();
+            return copy.delMin();
+        }
+    }
+
+   /**
+     * A test client.
+     */
+    /*
+        MinPQ<String> pq = new MinPQ<String>();
+        while (!StdIn.isEmpty()) {
+            String item = StdIn.readString();
+            if (!item.equals("-")) pq.insert(item);
+            else if (!pq.isEmpty()) StdOut.print(pq.delMin() + " ");
+        }
+        StdOut.println("(" + pq.size() + " left on pq)");
+    */
+
+}
+
+
+
+class QuickUnionUF {
+    private int[] id;    // id[i] = parent of i
+    private int count;   // number of components
+    
+    // instantiate N isolated components 0 through N-1
+    public QuickUnionUF(int N) {
+        id = new int[N];
+        count = N;
+        for (int i = 0; i < N; i++) {
+            id[i] = i;
+        }
+    }
+    
+    // return number of connected components
+    public int count() {
+        return count;
+    }
+    
+    // return root of component corresponding to element p
+    public int find(int p) {
+        while (p != id[p])
+            p = id[p];
+        return p;
+    }
+    
+    // are elements p and q in the same component?
+    public boolean connected(int p, int q) {
+        return find(p) == find(q);
+    }
+    
+    // merge components containing p and q
+    public void union(int p, int q) {
+        int i = find(p);
+        int j = find(q);
+        if (i == j) return;
+        id[i] = j; 
+        count--;
+    }
+}
+
+
+
+class Vector { 
+    
+    private int N;               // length of the vector
+    private double[] data;       // array of vector's components
+    
+    
+    // create the zero vector of length n
+    public Vector(int n) {
+        N = n;
+        data = new double[N];
+    }
+    
+    // create a vector from either an array or a vararg list
+    public Vector(double[] d) {
+        N = d.length;
+        
+        // defensive copy so that client can't alter our copy of data[]
+        data = new double[N];
+        for (int i = 0; i < N; i++)
+            data[i] = d[i];
+    }
+    
+    // create a vector from either an array or a vararg list
+    // this constructor uses Java's vararg syntax to support
+    // a constructor that takes a variable number of arguments, such as
+    // Vector x = new Vector(1.0, 2.0, 3.0, 4.0);
+    // Vector y = new Vector(5.0, 2.0, 4.0, 1.0);
+    /*
+     public Vector(double... d) {
+     N = d.length;
+     
+     // defensive copy so that client can't alter our copy of data[]
+     data = new double[N];
+     for (int i = 0; i < N; i++)
+     data[i] = d[i];
+     }
+     */
+    // return the length of the vector
+    public int length() {
+        return N;
+    }
+    
+    // return the inner product of this Vector a and b
+    public double dot(Vector that) {
+        if (this.N != that.N) throw new RuntimeException("Dimensions don't agree");
+        double sum = 0.0;
+        for (int i = 0; i < N; i++)
+            sum = sum + (this.data[i] * that.data[i]);
+        return sum;
+    }
+    
+    // return the Euclidean norm of this Vector
+    public double magnitude() {
+        return Math.sqrt(this.dot(this));
+    }
+    
+    // return the Euclidean distance between this and that
+    public double distanceTo(Vector that) {
+        if (this.N != that.N) throw new RuntimeException("Dimensions don't agree");
+        return this.minus(that).magnitude();
+    }
+    
+    // return this + that
+    public Vector plus(Vector that) {
+        if (this.N != that.N) throw new RuntimeException("Dimensions don't agree");
+        Vector c = new Vector(N);
+        for (int i = 0; i < N; i++)
+            c.data[i] = this.data[i] + that.data[i];
+        return c;
+    }
+    
+    // return this + that
+    public Vector minus(Vector that) {
+        if (this.N != that.N) throw new RuntimeException("Dimensions don't agree");
+        Vector c = new Vector(N);
+        for (int i = 0; i < N; i++)
+            c.data[i] = this.data[i] - that.data[i];
+        return c;
+    }
+    
+    // return the corresponding coordinate
+    public double cartesian(int i) {
+        return data[i];
+    }
+    
+    // create and return a new object whose value is (this * factor)
+    public Vector times(double factor) {
+        Vector c = new Vector(N);
+        for (int i = 0; i < N; i++)
+            c.data[i] = factor * data[i];
+        return c;
+    }
+    
+    
+    // return the corresponding unit vector
+    public Vector direction() {
+        if (this.magnitude() == 0.0) throw new RuntimeException("Zero-vector has no direction");
+        return this.times(1.0 / this.magnitude());
+    }
+    
+    
+    // return a string representation of the vector
+    public String toString() {
+        String s = "";
+        for (int i = 0; i < N; i++)
+            s = s + data[i] + " ";
+        return s;
+    }
+    
+}
+
+
+
+
+
+ class StaticSETofInts {
+    private int[] a;
+    public StaticSETofInts(int[] keys) {
+        // defensive copy
+        a = new int[keys.length];
+        for (int i = 0; i < keys.length; i++)
+            a[i] = keys[i];
+        
+        Arrays.sort(a);
+        
+        // probably should check that no duplicates
+    }
+    
+    public boolean contains(int key) {
+        return rank(key) != -1;
+    }
+    
+    // Binary search.
+    public int rank(int key) {
+        int lo = 0;
+        int hi = a.length - 1;
+        while (lo <= hi) {
+            // Key is in a[lo..hi] or not present.
+            int mid = lo + (hi - lo) / 2;
+            if      (key < a[mid]) hi = mid - 1;
+            else if (key > a[mid]) lo = mid + 1;
+            else return mid;
+        }
+        return -1;
+    }
+}
+
+
+
 
 
 
