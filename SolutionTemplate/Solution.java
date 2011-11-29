@@ -5,7 +5,7 @@ import java.util.*;
 public class Solution{
 
 
-    public static void solve(String filename){
+    public static void solve(){
 
 	try{
 	    FileInputStream fstream = new FileInputStream(filename);
@@ -32,9 +32,18 @@ public class Solution{
 
     public static void main(String[] args){
 
-	String filename = args[0];
-	solve(filename);
+	try{
+	    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	    String s = br.readLine();
+	    
 
+	}catch(Exception e){
+
+	    System.err.println("Error: " + e.getMessage());
+
+
+
+	}
 
 
 
