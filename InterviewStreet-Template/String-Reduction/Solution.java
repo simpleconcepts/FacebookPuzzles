@@ -1,19 +1,22 @@
 import java.io.*;
-import java.lang.*;
 import java.util.*;
 
 public class Solution{
 
 
+    //    public static void solve(BufferedReader br){
     public static void solve(String filename){
-
 	try{
+	    
 	    FileInputStream fstream = new FileInputStream(filename);
 	    DataInputStream in = new DataInputStream(fstream);
 	    BufferedReader br = new BufferedReader(new InputStreamReader(in));
+	    
 
 	    String[] parameters = br.readLine().trim().split("\\s+");
+
 	    final int N = Integer.parseInt(parameters[0]);
+
 	    final int K = Integer.parseInt(parameters[1]);
 
 	    int[] initialPosition = new int[N+1];
@@ -37,22 +40,6 @@ public class Solution{
 
 	    }
 
-	    // Boundary Cases
-	    if(N == 0){
-
-		System.out.println(0);
-		return;
-		
-
-	    }else if(N == 1){
-
-		System.out.println(1);
-		//	hanoi(one,start,finish,using);
-		return;
-
-
-
-	    }
 		
 		/*
 		  Aha! Moment: In the question they state that there is always a solution less than
@@ -64,48 +51,6 @@ public class Solution{
 		  This implies for n = 1,2 for all 3-peg problems
 		  k = 0, 1.
 
-
-
-		 */
-
-
-
-	    if(K == 3){
-
-		int minimumSteps = (int)Math.pow(2,N) - 1;
-		
-		System.out.println(minimumSteps);
-		hanoi(N,1,2,3);
-
-
-	    }
-
-
-	    /*
-
-	      For Complete Solution See:
-
-	      Generalized Multi-Peg Tower of Hanoi Problem
-	      By: A. A. K. Majumdar
-
-	      
-
-
-	     */
-	    else if(K >= 4){
-
-		int m;
-		/*
-
-		  Hmsubn = (2m-5)(Math.pow(2,n/m-2-1)) if i = 0
-		  
-		  Hmsubn = (2i-1)(Math.pow(2,n-i/m-2) + (2m-5)(Math.pow(2,(n-i)/(m-2)) -1) i not 0
-
-		  i = n%(m-2)
-
-		  n disks to peg m with H^m sub n.
-
-		  If n < m then HMsubn = 2n - 1
 
 
 		 */
@@ -127,21 +72,6 @@ public class Solution{
 
     }
 
-    public static void hanoi(int N, int Start, int To, int Using){
-
-	if(N == 1){
-
-      	    System.out.println(Start + " " + To );
-	}
-	else{
-
-	    hanoi(N-1,Start,Using,To);
-	    hanoi(1, Start, To, Using);
-	    hanoi(N-1,Using, To, Start);
-
-	}
-
-
 
     }
 
@@ -151,23 +81,17 @@ public class Solution{
 
     public static void main(String[] args){
 
-	String filename = args[0];
-	solve(filename);
+	try{
+	    //BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	    // solve(br);
+	    solve(args[0]);
+	}catch(Exception e){
+	    
+	    System.err.println("Error: "+ e.getMessage());
 
-
-
+	}
 
     }
-
-
-
-
-
-
-
-
-
-
 
 
 }
